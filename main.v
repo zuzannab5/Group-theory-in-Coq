@@ -2,17 +2,17 @@ Require Import Setoid.
 
 
 Record GroupTheo : Type := groupTheo
-  { G : Set; (* nosnik *)
-    op : G -> G -> G; (* operacja *)
-    assoc : forall(x y z : G), op (op x y) z = op x (op y z);
-    neut := forall(x : G), exists( e : G), op e x = x /\ op x e = x;
-    inv := forall(x : G), exists( e y : G) , op x y = e /\ op y x  = e; 
+  { Gt : Set; (* nosnik *)
+    opt : Gt -> Gt -> Gt; (* operacja *)
+    assoct : forall(x y z : Gt), opt (opt x y) z = opt x (opt y z);
+    neutt := forall(x : Gt), exists( e : Gt), opt e x = x /\ opt x e = x;
+    invt := forall(x : Gt), exists( e y : Gt) , opt x y = e /\ opt y x  = e; 
   }.
 
 (* Jednoznaczność elementu neutralnego *)
-Definition idPro (g : GroupTheo ) (e : G g) := (forall(x : G g), op g e x = x /\ op g x e = x).
+Definition idPro (g : GroupTheo ) (e : Gt g) := (forall(x : Gt g), opt g e x = x /\ opt g x e = x).
 
-Theorem exOnlyOne : forall (g : GroupTheo), forall( e f : G g), (idPro g e /\ idPro g f) -> e = f.
+Theorem exOnlyOne : forall (g : GroupTheo), forall( e f : Gt g), (idPro g e /\ idPro g f) -> e = f.
 Proof.  
   unfold idPro.
   intros.
@@ -25,10 +25,10 @@ Proof.
   trivial.
 Qed.
 
-(* Jednoznaczność elementu odwrotnego *)
-Definition invPro (g : GroupTheo) (e y : G g):= idPro g e /\ ( forall(x : G g) ,( op g x y = e /\ op g y x  = e)).
+(* Jednoznaczność odwrotności  *)
+Definition invPro (g : GroupTheo) (e y : Gt g):= idPro g e /\ ( forall(x : Gt g) ,( opt g x y = e /\ opt g y x  = e)).
 
-Theorem exOnlyOneInv : forall( g : GroupTheo), forall (e y1 y2 x : G g), invPro g e y1 /\ invPro g e y2 -> y1 = y2.
+Theorem exOnlyOneInv : forall( g : GroupTheo), forall (e y1 y2 x : Gt g), invPro g e y1 /\ invPro g e y2 -> y1 = y2.
 Proof.
   unfold invPro.
   unfold idPro.
@@ -48,11 +48,11 @@ Proof.
   destruct H8.
   rewrite <- H8 at 1.
   rewrite <- H9 at 1.
-  rewrite (assoc ).
+  rewrite (assoct ).
   trivial.
 Qed.
 
-
+(* Definicja grupy z uwzględnieniem jednoznaczności elementu e oraz jednoznaczności odwrotności *)
 Record Group : Type := group
   { G : Set; (* nosnik *)
     op : G -> G -> G; (* operacja *)
