@@ -1,13 +1,17 @@
 Require Import Setoid.
 Require Import Lia.
 
+
+
+
 Record GroupTheo : Type := groupTheo
   { Gt : Set; (* nosnik *)
     opt : Gt -> Gt -> Gt; (* operacja *)
     assoct : forall(x y z : Gt), opt (opt x y) z = opt x (opt y z);
-    neutt := forall(x : Gt), exists( e : Gt), opt e x = x /\ opt x e = x;
-    invt := forall(x : Gt), exists( e y : Gt) , opt x y = e /\ opt y x  = e; 
+    neutt := exists( e : Gt), forall(x : Gt), opt e x = x /\ opt x e = x;
+    invt := forall(e : Gt), (forall(x : Gt), opt e x = x /\ opt x e = x )->  forall(x : Gt), exists( y : Gt) , opt x y = e /\ opt y x  = e; 
   }.
+
 
 
 
@@ -33,7 +37,7 @@ Qed.
 Definition invPro (g : GroupTheo) (e y : Gt g):= idPro g e /\ ( forall(x : Gt g) ,( opt g x y = e /\ opt g y x  = e)).
 
 
-Theorem exOnlyOneInv : forall( g : GroupTheo), forall (e y1 y2 x : Gt g), invPro g e y1 /\ invPro g e y2 -> y1 = y2.
+Theorem exOnlyOneInv : forall( g : GroupTheo), forall (e y1 y2 x : Gt g), idPro g e /\ invPro g e y1 /\ invPro g e y2 -> y1 = y2.
 (* Pomysł dowodu :*)
 (* y1 =  y1 <*> e = y1 <*> (x <*> y2) = (y1 <*> x) <*> y2 = e <*> y2 = y2) *)
 Proof.
@@ -41,18 +45,19 @@ Proof.
   unfold idPro.
   intros.
   destruct H.
-  destruct H, H0.
+  destruct H0.
+  destruct H0, H1.
   specialize H with (x := y1) .
   destruct H.
   specialize H0 with (x := y2) .
   destruct H0.
-  rewrite <- H3.
+  rewrite <- H4.
   rewrite <- H0.
-  specialize H1 with (x := x).
   specialize H2 with (x := x).
-  destruct H1, H2.
-  rewrite <- H2 at 1.
-  rewrite <- H5 at 1.
+  specialize H3 with (x := x).
+  destruct H2, H3.
+  rewrite <- H3 at 1.
+  rewrite <- H6 at 1.
   rewrite (assoct).
   trivial.
 Qed.
