@@ -85,7 +85,7 @@ Record AbelianGroup : Type := aGroup
 
 
 
-Notation " x <* g *> y" := (op g x y) (at level 50 ).
+Notation " x <* g *> y" := (op g x y) (at level 50, left associativity).
 
 Theorem pPowerGivesAbelian: forall (g : Group), forall( x y : G g), ( forall (p : G g),  p <* g *>  p = e g ) ->  x <* g *>  y = y  <* g *>  x.
 (*  Idea dowódu
@@ -115,7 +115,7 @@ Proof.
     specialize assoc_prop with (x := y) (y :=  (y <* g *> x)) (z := (y <* g *> x)) as assoc_doub.
     rewrite assoc_doub.
     specialize H with (p := (y <* g *> x)) as YX.
-  rewrite YX at 1.
+   rewrite YX at 1.  
   rewrite H3.
   trivial.
 Qed.
