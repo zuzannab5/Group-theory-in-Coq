@@ -14,10 +14,6 @@ Record GroupTheo : Type := groupTheo
 
 
 
-
-
-
-
 (* Jednoznaczność elementu neutralnego - krótszy zapis*)
 Definition idPro (g : GroupTheo ) (e : Gt g) := (forall(x : Gt g), opt g e x = x /\ opt g x e = x).
 
@@ -178,6 +174,34 @@ Qed.
 
 
 
+(*Twierdzenie o tym, że (ab)^-1=b^-1*a^-1 *)
+Theorem InvABEqInvBInvA: forall (g : Group), forall (a b: G g), inv g (a <* g *> b) = inv g b <* g *> inv g a.
+Proof.
+  intros.
+  apply (cancelL g (a <* g *> b)).
+  rewrite <- (assoc g).
+  pose (inv_prop := inverse g).
+  specialize inv_prop with (x := a <* g *> b) as invAB.
+  destruct invAB.
+  rewrite H.
+  specialize inv_prop with (x := b) as invB.
+  destruct invB.
+  specialize inv_prop with (x := a) as invA.
+  destruct invA.
+  pose (assoc_prop := assoc g).
+  specialize assoc_prop with (x := a)(y := b)(z:=inv g b) as AssocBinv. 
+  rewrite AssocBinv.
+  rewrite H1.
+  pose (id_prop := id g).
+  specialize id_prop with (x := a) as idA.
+  destruct idA.
+  rewrite H6.
+  rewrite H3.
+  trivial.
+Qed.
+
+
+  
 
 
 

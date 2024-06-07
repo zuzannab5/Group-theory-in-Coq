@@ -14,7 +14,7 @@
 
 	- [x] d. a^-1^-1 = a `InvInvAIsA`
 
-	- [ ] e. (ab)^-1 = b^-1 a^-1
+	- [x] e. (ab)^-1 = b^-1 a^-1 `InvABEqInvBInvA`
 
 	Przykład:
 	- [ ] definicja grupy Z4
