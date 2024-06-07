@@ -15,6 +15,9 @@ Record GroupTheo : Type := groupTheo
 
 
 
+
+
+
 (* Jednoznaczność elementu neutralnego - krótszy zapis*)
 Definition idPro (g : GroupTheo ) (e : Gt g) := (forall(x : Gt g), opt g e x = x /\ opt g x e = x).
 
@@ -75,7 +78,6 @@ Record Group : Type := group
   }.
 
 
-  
 
 Record AbelianGroup : Type := aGroup 
   {
@@ -84,8 +86,100 @@ Record AbelianGroup : Type := aGroup
   }.
 
 
-
 Notation " x <* g *> y" := (op g x y) (at level 50, left associativity).
+
+
+
+(*lematy dające zachowanie równości przy mnożeniu przez ten sam element*)
+
+Lemma lmult_a: forall (g : Group), forall (a b c : G g), b = c -> a <* g *> b = a <* g *> c.
+  intros; 
+  rewrite H; 
+  auto.
+Qed.
+
+Lemma rmult_a: forall (g : Group), forall (a b c : G g), b = c -> b <* g *> a = c <* g *> a.
+  intros; 
+  rewrite H; 
+  auto.
+Qed.
+
+
+(*Prawo skracania z lewej strony*)
+Theorem cancelL: forall (g : Group), forall (a b c : G g), a <* g *> b = a <* g *> c -> b = c.
+Proof.
+  intros.
+  pose (inv_prop := inverse g). (*wprowadzamy do założeń id g, assoc g i inv g*)
+  pose (id_prop := id g).
+  pose (assoc_prop := assoc g).
+  specialize assoc_prop with (x := inv g a)(y := a)(z:=b) as AssocB.
+  specialize assoc_prop with (x := inv g a)(y := a)(z:=c) as AssocC.
+  specialize inv_prop with (x := a) as invA.
+  specialize id_prop with (x := b) as idB.
+  specialize id_prop with (x := c) as idC.
+  destruct idB, idC.
+  rewrite <- H0, <- H2.
+  destruct invA.
+  rewrite <- H5.
+  rewrite AssocB.
+  rewrite AssocC.
+  apply (lmult_a).
+  trivial.
+Qed.
+
+
+
+(*Prawo skracania z prawej strony*)
+Theorem cancelR: forall (g : Group), forall (a b c : G g), b <* g *> a = c <* g *> a -> b = c.
+Proof.
+  intros.
+  pose (inv_prop := inverse g). (*wprowadzamy do założeń id g, assoc g i inv g*)
+  pose (id_prop := id g).
+  pose (assoc_prop := assoc g).
+  specialize assoc_prop with (z := inv g a)(y := a)(x:=b) as AssocB.
+  specialize assoc_prop with (z := inv g a)(y := a)(x:=c) as AssocC.
+  specialize inv_prop with (x := a) as invA.
+  specialize id_prop with (x := b) as idB.
+  specialize id_prop with (x := c) as idC.
+  destruct idB, idC.
+  rewrite <- H1, <- H3.
+  destruct invA.
+  rewrite <- H4.
+  rewrite <- AssocB.
+  rewrite <- AssocC.
+  apply (rmult_a).
+  trivial.
+Qed.
+
+
+(*Przepisanie jednoznaczności elementu odwrotnego na typ Group*)
+Theorem inv_uniq: forall (g : Group), forall (a b: G g), a <* g *> b = e g -> b = inv g a.
+Proof.
+  intros.
+  apply (cancelL g a b (inv g a)).
+  pose (inv_prop := inverse g).
+  specialize inv_prop with (x := a) as invA.
+  destruct invA.
+  rewrite H0.
+  trivial.
+Qed.
+
+(*Twierdzenie o tym, że (a^(-1))^(-1)=a*)
+Theorem InvInvAIsA: forall (g : Group), forall (a : G g), inv g (inv g a) = a.
+Proof.
+  intros.
+  pose (inv_prop := inverse g).
+  specialize inv_prop with (x := a) as invA.
+  destruct invA.
+  apply inv_uniq in H0.
+  symmetry.
+  trivial.
+Qed.
+
+
+
+
+
 
 Theorem pPowerGivesAbelian: forall (g : Group), forall( x y : G g), ( forall (p : G g),  p <* g *>  p = e g ) ->  x <* g *>  y = y  <* g *>  x.
 (*  Idea dowódu

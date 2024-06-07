@@ -10,9 +10,9 @@
 
 	- [x] b. dla dowolnego el istnieje dokładnie 1 el odwrotny `exOnlyOneInv`
 
-	- [ ] c. prawo skracania z lewej i prawej
+	- [x] c. prawo skracania z lewej i prawej `cancelL` i `cancelR`
 
-	- [ ] d. a^-1^-1 = a
+	- [x] d. a^-1^-1 = a `InvInvAIsA`
 
 	- [ ] e. (ab)^-1 = b^-1 a^-1
 
