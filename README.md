@@ -1,7 +1,7 @@
 # Group-theory-in-Coq
 1. Podstawowe definicje
    - [x] Definicja typu grupy `GroupTheo` i `Group`
-   - [ ] Definicja podgrupy
+   - [x] Definicja podgrupy `Section Subgroup`
    - [ ] *definicja warstwy lewostronnej/prawo*
 
 2. Proste twierdzenia dla grup i przykłady grupy i podgrupy

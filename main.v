@@ -74,8 +74,18 @@ Record Group : Type := group
   }.
 
 
+Section Subgroup.
 
+Variable H : Group.
 
+(* Defininicja podgrupy *)
+Record SubGroup (K : H.(G) -> Prop) : Prop := (*Zapis H.(G) oznacza odwołanie się do pola G rekordu H typu Group*)
+{ 
+  sub_inv : forall x, K x -> K (H.(inv) x); 
+  sub_op : forall x y, (K x /\ K y) -> K (H.(op) x y)
+}.
+
+End Subgroup.
 
 
 
