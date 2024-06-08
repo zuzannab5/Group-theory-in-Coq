@@ -6,7 +6,7 @@
 
 2. Proste twierdzenia dla grup i przykłady grupy i podgrupy
 
-	- [x] a.  istnieje dokładnie jeden el neutralny `exOnlyOne` (Zuzia)
+	- [x] a.  istnieje dokładnie jeden el neutralny `exOnlyOneE` (Zuzia)
 
 	- [x] b. dla dowolnego el istnieje dokładnie 1 el odwrotny `exOnlyOneInv` (Zuzia)
 

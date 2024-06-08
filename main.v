@@ -14,7 +14,7 @@ Record GroupTheo : Type := groupTheo
 Definition idPro (g : GroupTheo ) (e : Gt g) := (forall(x : Gt g), opt g e x = x /\ opt g x e = x).
 
 (* Twierdzenie, że istnieje dokładnie jeden element neutralny *)
-Theorem exOnlyOne : forall (g : GroupTheo), forall( e f : Gt g), (idPro g e /\ idPro g f) -> e = f.
+Theorem exOnlyOneE : forall (g : GroupTheo), forall( e f : Gt g), (idPro g e /\ idPro g f) -> e = f.
 Proof.  
   unfold idPro.
   intros.
