@@ -28,7 +28,6 @@ Proof.
 Qed.
 
 
-
 (* Jednoznaczność odwrotności - krótszy zapis  *)
 Definition invPro (g : GroupTheo) (e y x : Gt g):= (  opt g x y = e /\ opt g y x  = e).
 
@@ -99,7 +98,7 @@ Record SubG := subGroup
 Record AbelianGroup : Type := aGroup 
   {
     abelGr : Group;
-    abelComm : forall (x y : G abelGr), x <* abelGr *> y = y <* abelGr *> x;
+    comm : forall (x y : G abelGr), x <* abelGr *> y = y <* abelGr *> x;
   }.
 
 
