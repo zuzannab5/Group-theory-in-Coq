@@ -75,6 +75,10 @@ Record Group : Type := group
 
 
 
+
+
+
+
 Record AbelianGroup : Type := aGroup 
   {
     abelGr : Group;
@@ -201,7 +205,6 @@ Proof.
 Qed.
 
 
-  
 
 
 
@@ -241,6 +244,105 @@ Qed.
 
 
 
+Section Z4_Group.
+
+(* Definiujemy typ dla Z4 *)
+Inductive Z4 : Type := z0 | z1 | z2 | z3.
+
+(* Definiujemy dodawanie modulo 4 *)
+Definition add_Z4 (a b : Z4) : Z4 :=
+  match a, b with
+  | z0, x => x
+  | x, z0 => x
+  | z1, z1 => z2
+  | z1, z2 => z3
+  | z1, z3 => z0
+  | z2, z1 => z3
+  | z2, z2 => z0
+  | z2, z3 => z1
+  | z3, z1 => z0
+  | z3, z2 => z1
+  | z3, z3 => z2
+  end.
+
+(* Element neutralny dla dodawania *)
+Definition e_Z4 : Z4 := z0.
+
+(* Definiujemy operację odwrotności *)
+Definition inv_Z4 (a : Z4) : Z4 :=
+  match a with
+  | z0 => z0
+  | z1 => z3
+  | z2 => z2
+  | z3 => z1
+  end.
+  
+(* Własność łączności *)
+Lemma add_assoc : forall (x y z : Z4), add_Z4 x (add_Z4 y z) = add_Z4 (add_Z4 x y) z.
+Proof.
+  intros x y z.
+  destruct x, y, z;
+  simpl;
+  reflexivity.
+Qed.
+
+(* Lewostronne działanie elementu neutralnego *)
+Lemma add_e_l : forall (x : Z4), add_Z4 e_Z4 x = x.
+Proof.
+  intros.
+  destruct x; 
+  simpl; 
+  reflexivity.
+Qed.
+
+(* Prawostronne działanie elementu neutralnego *)
+Lemma add_e_r : forall (x : Z4), add_Z4 x e_Z4 = x.
+Proof.
+  intros.
+  destruct x; 
+  simpl; 
+  reflexivity.
+Qed.
+
+(* Lewostronna odwrotność *)
+Lemma add_inv_l : forall (x : Z4), add_Z4 (inv_Z4 x) x = e_Z4.
+Proof.
+  intros.
+  destruct x; 
+  simpl; 
+  reflexivity.
+Qed.
+
+(* Prawostronna odwrotność *)
+Lemma add_inv_r : forall (x : Z4), add_Z4 x (inv_Z4 x) = e_Z4.
+Proof.
+  intros.
+  destruct x; 
+  simpl; 
+  reflexivity.
+Qed.
+
+(* Dowód, że Z_4 jest grupą, co jest łącznym wynikiem powyższych lematów *)
+Theorem Z4_is_group : forall (x y z : Z4), add_Z4 x (add_Z4 y z) = add_Z4 (add_Z4 x y) z /\ add_Z4 e_Z4 x = x /\ 
+add_Z4 x e_Z4 = x /\ add_Z4 (inv_Z4 x) x = e_Z4 /\ add_Z4 x (inv_Z4 x) = e_Z4.
+Proof.
+  intros.
+  split.
+  apply add_assoc.
+  split.
+  apply add_e_l.
+  split.
+  apply add_e_r.
+  split.
+  apply add_inv_l.
+  apply add_inv_r.
+Qed.
+
+
+(*Jeszcze zostało udowodnić, że Z_2 jest podgrupą Z_4*)
+
+
+End Z4_Group.
     
 
 

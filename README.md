@@ -16,9 +16,9 @@
 
 	- [x] e. (ab)^-1 = b^-1 a^-1 `InvABEqInvBInvA`
 
-	Przykład:
-	- [ ] definicja grupy Z4
-	- [ ] pokazać, że to grupa 
+	Przykład: 
+	- [x] definicja grupy Z4 `Section Z4_Group`
+	- [x] pokazać, że to grupa 
 	- [ ] pokazać, że Z2 to podgrupa Z4
 
 3. Grupy abelowe
