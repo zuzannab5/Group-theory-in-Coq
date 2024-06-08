@@ -1,5 +1,6 @@
-Require Import Setoid.
-Require Import Lia.
+
+Require Import Setoid. 
+
 
 (* Typ grupy teoretycznej - zgodnie z definicją grupy z Bagińskiego *)
 Record GroupTheo : Type := groupTheo
@@ -29,10 +30,10 @@ Qed.
 
 
 (* Jednoznaczność odwrotności - krótszy zapis  *)
-Definition invPro (g : GroupTheo) (e y : Gt g):= idPro g e /\ ( forall(x : Gt g) ,( opt g x y = e /\ opt g y x  = e)).
+Definition invPro (g : GroupTheo) (e y x : Gt g):= (  opt g x y = e /\ opt g y x  = e).
 
 (* Twierdzenie, że dla dowolnego elementu istnieje jeden element odwrotny*)
-Theorem exOnlyOneInv : forall( g : GroupTheo), forall (e y1 y2 x : Gt g), idPro g e /\ invPro g e y1 /\ invPro g e y2 -> y1 = y2.
+Theorem exOnlyOneInv : forall( g : GroupTheo), forall (e x y1 y2 : Gt g), idPro g e /\ invPro g e y1 x /\  invPro g e y2 x -> y1 = y2.
 (* Pomysł dowodu :*)
 (* y1 =  y1 <*> e = y1 <*> (x <*> y2) = (y1 <*> x) <*> y2 = e <*> y2 = y2) *)
 Proof.
@@ -42,18 +43,13 @@ Proof.
   destruct H.
   destruct H0.
   destruct H0, H1.
-  specialize H with (x := y1) .
-  destruct H.
-  specialize H0 with (x := y2) .
-  destruct H0.
-  rewrite <- H4.
-  rewrite <- H0.
-  specialize H2 with (x := x).
-  specialize H3 with (x := x).
-  destruct H2, H3.
-  rewrite <- H3 at 1.
-  rewrite <- H6 at 1.
-  rewrite (assoct).
+  specialize H with (x := y1) as Ey1 .
+  specialize H with (x := y2) as Ey2 .
+  destruct Ey1, Ey2.
+  rewrite <- H5.
+  rewrite <- H1.
+  rewrite <- (assoct g).
+  rewrite H2.
   trivial.
 Qed.
 
