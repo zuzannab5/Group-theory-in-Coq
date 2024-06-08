@@ -1,9 +1,7 @@
 Require Import Setoid.
 Require Import Lia.
 
-
-
-
+(* Typ grupy teoretycznej - zgodnie z definicją grupy z Bagińskiego *)
 Record GroupTheo : Type := groupTheo
   { Gt : Set; (* nosnik *)
     opt : Gt -> Gt -> Gt; (* operacja *)
@@ -12,12 +10,10 @@ Record GroupTheo : Type := groupTheo
     invt := forall(e : Gt), (forall(x : Gt), opt e x = x /\ opt x e = x )->  forall(x : Gt), exists( y : Gt) , opt x y = e /\ opt y x  = e; 
   }.
 
-
-
 (* Jednoznaczność elementu neutralnego - krótszy zapis*)
 Definition idPro (g : GroupTheo ) (e : Gt g) := (forall(x : Gt g), opt g e x = x /\ opt g x e = x).
 
-
+(* Twierdzenie, że istnieje dokładnie jeden element neutralny *)
 Theorem exOnlyOne : forall (g : GroupTheo), forall( e f : Gt g), (idPro g e /\ idPro g f) -> e = f.
 Proof.  
   unfold idPro.
@@ -35,7 +31,7 @@ Qed.
 (* Jednoznaczność odwrotności - krótszy zapis  *)
 Definition invPro (g : GroupTheo) (e y : Gt g):= idPro g e /\ ( forall(x : Gt g) ,( opt g x y = e /\ opt g y x  = e)).
 
-
+(* Twierdzenie, że dla dowolnego elementu istnieje jeden element odwrotny*)
 Theorem exOnlyOneInv : forall( g : GroupTheo), forall (e y1 y2 x : Gt g), idPro g e /\ invPro g e y1 /\ invPro g e y2 -> y1 = y2.
 (* Pomysł dowodu :*)
 (* y1 =  y1 <*> e = y1 <*> (x <*> y2) = (y1 <*> x) <*> y2 = e <*> y2 = y2) *)
@@ -61,7 +57,7 @@ Proof.
   trivial.
 Qed.
 
-(* Definicja grupy z uwzględnieniem jednoznaczności elementu e oraz jednoznaczności odwrotności *)
+(* Definicja grupy z uwzględnieniem jednoznaczności elementu neutralnego oraz jednoznaczności odwrotności *)
 Record Group : Type := group
   { G : Set; (* nosnik *)
     op : G -> G -> G; (* operacja *)
@@ -73,6 +69,7 @@ Record Group : Type := group
     inverse :  forall(x : G), op x (inv x) = e /\ op (inv x) x  = e ;
   }.
 
+Notation " x <* g *> y" := (op g x y) (at level 50).
 
 Section Subgroup.
 
@@ -87,17 +84,27 @@ Record SubGroup (K : H.(G) -> Prop) : Prop := (*Zapis H.(G) oznacza odwołanie s
 
 End Subgroup.
 
+(*  2 definicja podgrupy *)
+Inductive In (g: Group) : Type := inSet (a : G g) | notInSet (b : G g).
+
+Record SubG :=
+{
+  Gr : Group;
+  isInH : G Gr -> In Gr; 
+  notEmpty : exists(x : G Gr), isInH x = inSet Gr x;
+  cInv : forall(x : G Gr), isInH x = inSet Gr x -> isInH (inv Gr x) = inSet Gr (inv Gr x) ;
+  cOp : forall(x y : G Gr), isInH x = inSet Gr x  /\  isInH y = inSet Gr y -> isInH (x <* Gr *> y) = inSet Gr (x <* Gr *> y) ;
+}.
 
 
+
+
+(* Definicja grupy abelowej *)
 Record AbelianGroup : Type := aGroup 
   {
     abelGr : Group;
-    abelComm : forall (x y : G abelGr), op abelGr  x y = op abelGr  y x;
+    abelComm : forall (x y : G abelGr), x <* abelGr *> y = y <* abelGr *> x;
   }.
-
-
-Notation " x <* g *> y" := (op g x y) (at level 50, left associativity).
-
 
 
 (*lematy dające zachowanie równości przy mnożeniu przez ten sam element*)
@@ -217,7 +224,7 @@ Qed.
 
 
 
-
+(* Dowód twierdzenia, że jeśli dla każdego x, y, x^2 = e, to x * y = y * x*)
 Theorem pPowerGivesAbelian: forall (g : Group), forall( x y : G g), ( forall (p : G g),  p <* g *>  p = e g ) ->  x <* g *>  y = y  <* g *>  x.
 (*  Idea dowódu
 xy=(yy)xy(xx)=y(yxyx)x=yx.
