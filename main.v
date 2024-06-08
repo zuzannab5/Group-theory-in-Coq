@@ -87,7 +87,7 @@ End Subgroup.
 (*  2 definicja podgrupy *)
 Inductive In (g: Group) : Type := inSet (a : G g) | notInSet (b : G g).
 
-Record SubG :=
+Record SubG := subGroup
 {
   Gr : Group;
   isInH : G Gr -> In Gr; 
