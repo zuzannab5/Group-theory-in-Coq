@@ -69,7 +69,7 @@ Notation " x <* g *> y" := (op g x y) (at level 50).
 
 Inductive In (g: Group) : Type := inSet (a : G g) | notInSet (b : G g).
 
-Record SubG := subGroup
+Record SubGroup := subGroup
 {
   Gr : Group;
   isInH : G Gr -> In Gr; 
