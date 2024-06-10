@@ -275,7 +275,7 @@ Definition inv_Z4 (a : Z4) : Z4 :=
   end.
   
 (* Własność łączności *)
-Lemma add_assoc : forall (x y z : Z4), add_Z4 x (add_Z4 y z) = add_Z4 (add_Z4 x y) z.
+Lemma add_assoc : forall (x y z : Z4),  add_Z4 (add_Z4 x y) z = add_Z4 x (add_Z4 y z).
 Proof.
   intros x y z.
   destruct x, y, z;
@@ -284,57 +284,44 @@ Proof.
 Qed.
 
 (* Lewostronne działanie elementu neutralnego *)
-Lemma add_e_l : forall (x : Z4), add_Z4 e_Z4 x = x.
+Lemma add_e : forall (x : Z4), add_Z4 e_Z4 x = x /\ add_Z4 x e_Z4 = x.
 Proof.
   intros.
+  split.
+  destruct x; 
+  simpl; 
+  reflexivity.
   destruct x; 
   simpl; 
   reflexivity.
 Qed.
 
-(* Prawostronne działanie elementu neutralnego *)
-Lemma add_e_r : forall (x : Z4), add_Z4 x e_Z4 = x.
-Proof.
-  intros.
-  destruct x; 
-  simpl; 
-  reflexivity.
-Qed.
 
 (* Lewostronna odwrotność *)
-Lemma add_inv_l : forall (x : Z4), add_Z4 (inv_Z4 x) x = e_Z4.
+Lemma add_inv : forall (x : Z4), add_Z4 x (inv_Z4 x) = e_Z4 /\ add_Z4 (inv_Z4 x) x = e_Z4.
 Proof.
   intros.
+  split.
+  destruct x; 
+  simpl; 
+  reflexivity.
   destruct x; 
   simpl; 
   reflexivity.
 Qed.
 
-(* Prawostronna odwrotność *)
-Lemma add_inv_r : forall (x : Z4), add_Z4 x (inv_Z4 x) = e_Z4.
-Proof.
-  intros.
-  destruct x; 
-  simpl; 
-  reflexivity.
-Qed.
 
-(* Dowód, że Z_4 jest grupą, co jest łącznym wynikiem powyższych lematów *)
-Theorem Z4_is_group : forall (x y z : Z4), add_Z4 x (add_Z4 y z) = add_Z4 (add_Z4 x y) z /\ add_Z4 e_Z4 x = x /\ 
-add_Z4 x e_Z4 = x /\ add_Z4 (inv_Z4 x) x = e_Z4 /\ add_Z4 x (inv_Z4 x) = e_Z4.
-Proof.
-  intros.
-  split.
-  apply add_assoc.
-  split.
-  apply add_e_l.
-  split.
-  apply add_e_r.
-  split.
-  apply add_inv_l.
-  apply add_inv_r.
-Qed.
-
+(*Definicja Z4 jako grupy*)
+Definition Z4_Group : Group :=
+  {| G := Z4;
+     op := add_Z4;
+     inv := inv_Z4;
+     e := e_Z4;
+     assoc := add_assoc;
+     id := add_e;
+     inverse := add_inv;
+     |}.
+     
 
 (*Jeszcze zostało udowodnić, że Z_2 jest podgrupą Z_4*)
 
