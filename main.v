@@ -90,14 +90,16 @@ Record AbelianGroup : Type := aGroup
 (*lematy dające zachowanie równości przy mnożeniu przez ten sam element*)
 
 Lemma lmult_a: forall (g : Group), forall (a b c : G g), b = c -> a <* g *> b = a <* g *> c.
-  intros; 
-  rewrite H; 
+Proof.
+  intros. 
+  rewrite H. 
   auto.
 Qed.
 
 Lemma rmult_a: forall (g : Group), forall (a b c : G g), b = c -> b <* g *> a = c <* g *> a.
-  intros; 
-  rewrite H; 
+Proof.
+  intros. 
+  rewrite H. 
   auto.
 Qed.
 
