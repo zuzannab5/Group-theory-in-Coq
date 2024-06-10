@@ -66,20 +66,7 @@ Record Group : Type := group
 
 Notation " x <* g *> y" := (op g x y) (at level 50).
 
-Section Subgroup.
 
-Variable H : Group.
-
-(* Defininicja podgrupy *)
-Record SubGroup (K : H.(G) -> Prop) : Prop := (*Zapis H.(G) oznacza odwołanie się do pola G rekordu H typu Group*)
-{ 
-  sub_inv : forall x, K x -> K (H.(inv) x); 
-  sub_op : forall x y, (K x /\ K y) -> K (H.(op) x y)
-}.
-
-End Subgroup.
-
-(*  2 definicja podgrupy *)
 Inductive In (g: Group) : Type := inSet (a : G g) | notInSet (b : G g).
 
 Record SubG := subGroup
@@ -90,8 +77,6 @@ Record SubG := subGroup
   cInv : forall(x : G Gr), isInH x = inSet Gr x -> isInH (inv Gr x) = inSet Gr (inv Gr x) ;
   cOp : forall(x y : G Gr), isInH x = inSet Gr x  /\  isInH y = inSet Gr y -> isInH (x <* Gr *> y) = inSet Gr (x <* Gr *> y) ;
 }.
-
-
 
 
 (* Definicja grupy abelowej *)
@@ -215,8 +200,6 @@ Proof.
   rewrite H3.
   trivial.
 Qed.
-
-
 
 
 (* Dowód twierdzenia, że jeśli dla każdego x, y, x^2 = e, to x * y = y * x*)
