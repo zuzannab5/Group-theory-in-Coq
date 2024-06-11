@@ -2,7 +2,7 @@
 1. Podstawowe definicje
    - [x] Definicja typu grupy `GroupTheo` i `Group` (Zuzia)
    - [x] Definicja podgrupy `Section Subgroup`	(Krzysztof)
-   - [x] *Definicja warstwy lewostronnej `LCoset`/prawostronnej `RCoset`*  (Ola)
+   - [x] *Definicja warstwy lewostronnej `LCoset`/prawostronnej `RCoset`*  (Zuzia, Ola)
 
 2. Proste twierdzenia dla grup i przykłady grupy i podgrupy
 
