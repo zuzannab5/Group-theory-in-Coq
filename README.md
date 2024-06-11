@@ -19,9 +19,9 @@
 	Przykład: 
 	- [x] definicja grupy Z4 `Section Z4_Group` (Krzysztof)
 	- [x] pokazać, że to grupa 
-	- [ ] pokazać, że Z2 to podgrupa Z4
+	- [x] pokazać, że Z2 to podgrupa Z4 `Z2_subGroup_Z4` (Ola)
 
 3. Grupy abelowe
     - [x] a. definicja grupy abelowej `AbelianGroup` (Zuzia)
-    - [x] b. przykład, że Z3 jest abelowa.
+    - [x] b. przykład, że Z3 jest abelowa `Z3_Abelian_Group` (Ola)
     - [x] c. udowodnić, że grupa, w której każdy element spełnia warunek x^2 = e jest abelowa `pPowerGivesAbelian` (Zuzia)
