@@ -23,5 +23,5 @@
 
 3. Grupy abelowe
     - [x] a. definicja grupy abelowej `AbelianGroup` (Zuzia)
-    - [ ] b. przykład, że Z3 jest abelowa.
+    - [x] b. przykład, że Z3 jest abelowa.
     - [x] c. udowodnić, że grupa, w której każdy element spełnia warunek x^2 = e jest abelowa `pPowerGivesAbelian` (Zuzia)
