@@ -82,22 +82,22 @@ Record SubGroup := subGroup
 (* Definicja warstwy lewostronnej *)
 Record LCoset := lCoset
   {
-    g_l : Group;
-    a_l : G g_l;
     h_l : SubGroup;
-    HsubGroupG_l : Gr h_l = g_l
+    a_l : G (Gr h_l);
+    isInaH : G (Gr h_l) -> In (Gr h_l);
+    isInLcoset: forall( h: G (Gr h_l )), isInH h_l h = inSet (Gr h_l) h -> isInaH  (a_l  <* (Gr h_l ) *>  h) = inSet (Gr h_l) (a_l  <* (Gr h_l ) *>  h);
   }.
+
 
 (* Definicja warstwy prawostronnej *)
 Record RCoset := rCoset
   {
-    g_r : Group;
-    a_r : G g_r;
     h_r : SubGroup;
-    HsubGroupG_r : Gr h_r = g_r
-  }.
+    a_r : G (Gr h_r);
+    isInHa : G (Gr h_r) -> In (Gr h_r);
+    isInRcoset: forall( h: G (Gr h_r )), isInH h_r h = inSet (Gr h_r) h -> isInHa  ( h <* (Gr h_r ) *>  a_r ) = inSet (Gr h_r) (h  <* (Gr h_r ) *>  a_r);
+  }.  
 
- 
 
 (* Definicja grupy abelowej *)
 Record AbelianGroup : Type := aGroup 
