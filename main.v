@@ -78,8 +78,26 @@ Record SubGroup := subGroup
   cOp : forall(x y : G Gr), isInH x = inSet Gr x  /\  isInH y = inSet Gr y -> isInH (x <* Gr *> y) = inSet Gr (x <* Gr *> y) ;
 }.
 
-  
 
+(* Definicja warstwy lewostronnej *)
+Record LCoset := lCoset
+  {
+    g_l : Group;
+    a_l : G g_l;
+    h_l : SubGroup;
+    HsubGroupG_l : Gr h_l = g_l
+  }.
+
+(* Definicja warstwy prawostronnej *)
+Record RCoset := rCoset
+  {
+    g_r : Group;
+    a_r : G g_r;
+    h_r : SubGroup;
+    HsubGroupG_r : Gr h_r = g_r
+  }.
+
+ 
 
 (* Definicja grupy abelowej *)
 Record AbelianGroup : Type := aGroup 
@@ -326,6 +344,8 @@ Definition Z4_Group : Group :=
      
 
 (* Z_2 jest podgrupą Z_4 *)
+
+(* Zdefiniowanie, które elementy Z4 są w Z2 *)
 Definition z0_In_Z2 : In Z4_Group := inSet Z4_Group z0.
 Definition z2_In_Z2 : In Z4_Group := inSet Z4_Group z2.
 Definition z1_NotIn_Z2 : In Z4_Group := notInSet Z4_Group z1.
@@ -338,6 +358,7 @@ Definition isInZ2 (z : Z4) : In Z4_Group :=
   | z3 => z3_NotIn_Z2
   end.
 
+(* Z2 nie jest pusta *)
 Lemma Z2_notEmpty : exists (z : Z4), isInZ2 z = inSet Z4_Group z.
 Proof.
   exists z0.
@@ -346,6 +367,7 @@ Proof.
   reflexivity.
 Qed.
 
+(* Zamkniętość na branie odwrotności *)
 Lemma Z2_cInv : forall (z : Z4), isInZ2 z = inSet Z4_Group z -> isInZ2 (inv_Z4 z) = inSet Z4_Group (inv_Z4 z).
 Proof.
   intros.
@@ -364,6 +386,7 @@ Proof.
   discriminate.
 Qed.
 
+(* Zamkniętość Z2 względem działania *)
 Lemma Z2_cOp : forall (x y : Z4), isInZ2 x = inSet Z4_Group x /\ isInZ2 y = inSet Z4_Group y -> isInZ2 (x <* Z4_Group *> y) = inSet Z4_Group (x <* Z4_Group *> y).
 Proof.
   intros.
@@ -390,6 +413,7 @@ Proof.
   trivial.
 Qed.
 
+(* Definicja Z2 jako podgrupy Z4 *)
 Definition Z2_subGroup_Z4 : SubGroup :=
 {|
   Gr := Z4_Group;
@@ -399,10 +423,10 @@ Definition Z2_subGroup_Z4 : SubGroup :=
   cOp := Z2_cOp
 |}.
 
-
 End Z4_Group.
     
 
+(* Grupa Z3 *)
 Inductive Z3 : Type := x0 | x1 | x2.
 
 Definition add_Z3 (a b : Z3) : Z3 := 
@@ -424,6 +448,8 @@ Definition inv_Z3 (a : Z3) : Z3 :=
   | x2 => x1
   end.
 
+
+(* Łączność dodawania w Z3 *)
 Lemma add_assoc_Z3 : forall (a b c : Z3), add_Z3 (add_Z3 a b) c = add_Z3 a (add_Z3 b c). 
 Proof.
   intros.
@@ -432,6 +458,7 @@ Proof.
   trivial.
 Qed.
 
+(* Element neutralny w Z3 *)
 Lemma add_e_Z3 : forall (a : Z3), add_Z3 e_Z3 a = a /\ add_Z3 a e_Z3 = a.
 Proof.
   intros.
@@ -441,6 +468,7 @@ Proof.
   trivial.
 Qed.
 
+(* Istnienie odwrotności w Z3 *)
 Lemma add_inv_Z3 : forall (a : Z3), add_Z3 a (inv_Z3 a) = e_Z3 /\ add_Z3 (inv_Z3 a) a = e_Z3.
 Proof.
   intros.
@@ -450,6 +478,7 @@ Proof.
   trivial.
 Qed.
 
+(* Definicja Z3 jako grupy *)
 Definition Z3_Group : Group :=
   {| G := Z3;
     op := add_Z3;
@@ -461,6 +490,7 @@ Definition Z3_Group : Group :=
     inverse :=  add_inv_Z3
   |}.
 
+(* Pokazanie, że Z3 jest abelowa *)
 Theorem add_comm_Z3 : forall (a b : Z3), add_Z3 a b = add_Z3 b a.
 Proof.
   intros.
