@@ -78,6 +78,8 @@ Record SubGroup := subGroup
   cOp : forall(x y : G Gr), isInH x = inSet Gr x  /\  isInH y = inSet Gr y -> isInH (x <* Gr *> y) = inSet Gr (x <* Gr *> y) ;
 }.
 
+  
+
 
 (* Definicja grupy abelowej *)
 Record AbelianGroup : Type := aGroup 
@@ -323,10 +325,82 @@ Definition Z4_Group : Group :=
      |}.
      
 
-(*Jeszcze zostało udowodnić, że Z_2 jest podgrupą Z_4*)
+(* Z_2 jest podgrupą Z_4 *)
+
 
 
 End Z4_Group.
     
+
+Inductive Z3 : Type := x0 | x1 | x2.
+
+Definition add_Z3 (a b : Z3) : Z3 := 
+  match a, b with
+  | x0, m => m
+  | m, x0 => m
+  | x1, x1 => x2
+  | x1, x2 => x0
+  | x2, x1 => x0
+  | x2, x2 => x1
+  end.
+
+Definition e_Z3 : Z3 := x0.
+
+Definition inv_Z3 (a : Z3) : Z3 :=
+  match a with
+  | x0 => x0
+  | x1 => x2
+  | x2 => x1
+  end.
+
+Lemma add_assoc_Z3 : forall (a b c : Z3), add_Z3 (add_Z3 a b) c = add_Z3 a (add_Z3 b c). 
+Proof.
+  intros.
+  destruct a, b, c;
+  simpl;
+  trivial.
+Qed.
+
+Lemma add_e_Z3 : forall (a : Z3), add_Z3 e_Z3 a = a /\ add_Z3 a e_Z3 = a.
+Proof.
+  intros.
+  destruct a;
+  split;
+  simpl;
+  trivial.
+Qed.
+
+Lemma add_inv_Z3 : forall (a : Z3), add_Z3 a (inv_Z3 a) = e_Z3 /\ add_Z3 (inv_Z3 a) a = e_Z3.
+Proof.
+  intros.
+  destruct a;
+  split;
+  simpl;
+  trivial.
+Qed.
+
+Definition Z3_Group : Group :=
+  {| G := Z3;
+    op := add_Z3;
+    inv := inv_Z3;
+    e := e_Z3;
+  
+    assoc := add_assoc_Z3;
+    id :=  add_e_Z3 ;
+    inverse :=  add_inv_Z3
+  |}.
+
+Theorem add_comm_Z3 : forall (a b : Z3), add_Z3 a b = add_Z3 b a.
+Proof.
+  intros.
+  destruct a, b;
+  simpl;
+  trivial.
+Qed.
+
+Definition Z3_Abelian_Group : AbelianGroup :=
+  {| abelGr := Z3_Group;
+     comm := add_comm_Z3
+  |}.
 
 
