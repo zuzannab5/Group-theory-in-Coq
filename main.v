@@ -322,11 +322,82 @@ Definition Z4_Group : Group :=
      assoc := add_assoc;
      id := add_e;
      inverse := add_inv;
-     |}.
+  |}.
      
 
 (* Z_2 jest podgrupą Z_4 *)
+Definition z0_In_Z2 : In Z4_Group := inSet Z4_Group z0.
+Definition z2_In_Z2 : In Z4_Group := inSet Z4_Group z2.
+Definition z1_NotIn_Z2 : In Z4_Group := notInSet Z4_Group z1.
+Definition z3_NotIn_Z2 : In Z4_Group := notInSet Z4_Group z3.
+Definition isInZ2 (z : Z4) : In Z4_Group :=
+  match z with
+  | z0 => z0_In_Z2
+  | z2 => z2_In_Z2
+  | z1 => z1_NotIn_Z2
+  | z3 => z3_NotIn_Z2
+  end.
 
+Lemma Z2_notEmpty : exists (z : Z4), isInZ2 z = inSet Z4_Group z.
+Proof.
+  exists z0.
+  simpl.
+  unfold z0_In_Z2.
+  reflexivity.
+Qed.
+
+Lemma Z2_cInv : forall (z : Z4), isInZ2 z = inSet Z4_Group z -> isInZ2 (inv_Z4 z) = inSet Z4_Group (inv_Z4 z).
+Proof.
+  intros.
+  destruct z.
+  simpl.
+  unfold z0_In_Z2.
+  reflexivity.
+  simpl.
+  unfold z3_NotIn_Z2.
+  discriminate.
+  simpl.
+  unfold z2_In_Z2.
+  reflexivity.
+  simpl.
+  unfold z1_NotIn_Z2.
+  discriminate.
+Qed.
+
+Lemma Z2_cOp : forall (x y : Z4), isInZ2 x = inSet Z4_Group x /\ isInZ2 y = inSet Z4_Group y -> isInZ2 (x <* Z4_Group *> y) = inSet Z4_Group (x <* Z4_Group *> y).
+Proof.
+  intros.
+  destruct H.
+  simpl.
+  destruct x.
+  simpl.
+  rewrite H0.
+  reflexivity.
+  destruct y.
+  discriminate.
+  trivial.
+  discriminate.
+  trivial.
+  destruct y.
+  trivial.
+  discriminate.
+  trivial.
+  discriminate.
+  destruct y.
+  discriminate.
+  trivial.
+  discriminate.
+  trivial.
+Qed.
+
+Definition Z2_subGroup_Z4 : SubGroup :=
+{|
+  Gr := Z4_Group;
+  isInH := isInZ2; 
+  notEmpty := Z2_notEmpty;
+  cInv := Z2_cInv;
+  cOp := Z2_cOp
+|}.
 
 
 End Z4_Group.
